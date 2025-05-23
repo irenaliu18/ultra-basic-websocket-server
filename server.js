@@ -9,7 +9,13 @@ let currentDoc = "";
 
 io.on("connection", (socket) => {
   // emit a doc change
-  // update the current doc based on change
+  socket.emit("docChange", currentDoc);
+  
+  socket.on("inputChange", (val) => {
+    // update the current doc based on change
+    currentDoc = val;
+    socket.broadcast.emit("docChange", currentDoc);
+  });
 });
 
 io.listen(8000);
